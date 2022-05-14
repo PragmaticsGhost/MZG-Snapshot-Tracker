@@ -56,10 +56,4 @@ while loop:
             print("Wallet ID is not the correct number of characters, try again.\n")
 
     else:
-        print("Incorrect wallet address, try again.\n")
-        
-
-
-#0x5558AED91F04C83bb9dd7201181634997D96a912
-    
-        
+        print("Incorrect wallet address, try again.\n")        
