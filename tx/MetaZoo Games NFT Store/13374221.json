@@ -1,0 +1,31 @@
+[
+  {
+    "address": "0xA0529c325e2594dcc599BA6E39aA4d6b28834c53",
+    "blockHash": "0xdafeed507f34cac1e659bfb32ef36614afea892cd5c22b88d69b6167e329edb9",
+    "blockNumber": 13374221,
+    "logIndex": 162,
+    "removed": false,
+    "transactionHash": "0x554efbab6b33fd6cb652f48fed084d2cfb4a56f19f3b764dc287a574a11bf9e8",
+    "transactionIndex": 97,
+    "id": "log_ba0ea204",
+    "returnValues": {
+      "0": "0x3dD341664b2FFeEDf9bE108d4fa926DeDfa9A0D6",
+      "1": "0xD5c544e7FD5e2B6b87Feb962cc1E61A6F85db070",
+      "2": "292",
+      "from": "0x3dD341664b2FFeEDf9bE108d4fa926DeDfa9A0D6",
+      "to": "0xD5c544e7FD5e2B6b87Feb962cc1E61A6F85db070",
+      "tokenId": "292"
+    },
+    "event": "Transfer",
+    "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+    "raw": {
+      "data": "0x",
+      "topics": [
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+        "0x0000000000000000000000003dd341664b2ffeedf9be108d4fa926dedfa9a0d6",
+        "0x000000000000000000000000d5c544e7fd5e2b6b87feb962cc1e61a6f85db070",
+        "0x0000000000000000000000000000000000000000000000000000000000000124"
+      ]
+    }
+  }
+]
