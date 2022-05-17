@@ -18,7 +18,7 @@
     "gasUsed": "284271",
     "cumulativeGasUsed": "11100751",
     "input": "deprecated",
-    "confirmations": "1173629"
+    "confirmations": "1173929"
   },
   {
     "blockNumber": "13711413",
@@ -39,7 +39,7 @@
     "gasUsed": "254102",
     "cumulativeGasUsed": "10435976",
     "input": "deprecated",
-    "confirmations": "1079122"
+    "confirmations": "1079422"
   },
   {
     "blockNumber": "13737222",
@@ -60,6 +60,69 @@
     "gasUsed": "216532",
     "cumulativeGasUsed": "4601265",
     "input": "deprecated",
-    "confirmations": "1053313"
+    "confirmations": "1053613"
+  },
+  {
+    "blockNumber": "14056654",
+    "timeStamp": "1642871270",
+    "hash": "0x1bbbcac3942aff846c07be1b65848388c3f608844500832b448a3a71b45a5eaf",
+    "nonce": "31",
+    "blockHash": "0xf33b91ad58bf98c63b081f132ecb2639b386a781c1b88107b18651396b1ffa87",
+    "from": "0x394388c688c647b9ba9b65f2240508ff9ace0af6",
+    "contractAddress": "0x7a15b36cb834aea88553de69077d3777460d73ac",
+    "to": "0x5558aed91f04c83bb9dd7201181634997d96a912",
+    "tokenID": "5280336779268220421569573059971679349075200194886069432279714075018412548877",
+    "tokenName": "Feral File \u2014 Unsupervised",
+    "tokenSymbol": "FF009",
+    "tokenDecimal": "0",
+    "transactionIndex": "137",
+    "gas": "315919",
+    "gasPrice": "147468936958",
+    "gasUsed": "228473",
+    "cumulativeGasUsed": "10954324",
+    "input": "deprecated",
+    "confirmations": "734181"
+  },
+  {
+    "blockNumber": "14057600",
+    "timeStamp": "1642883969",
+    "hash": "0x07279b8e0cc5387d959b97961c20cd5d83cb4273e97438068e8e2be519165b4d",
+    "nonce": "33",
+    "blockHash": "0x457c07965a6bfd133a916d70164529c1a7e89caa4917dcefd27b4a241a895349",
+    "from": "0x7c786160fb41d7e644c188ec702c203fc3f2e79e",
+    "contractAddress": "0xa0529c325e2594dcc599ba6e39aa4d6b28834c53",
+    "to": "0x5558aed91f04c83bb9dd7201181634997d96a912",
+    "tokenID": "64",
+    "tokenName": "MetaZoo Games",
+    "tokenSymbol": "MetaZoo Games NFT Store",
+    "tokenDecimal": "0",
+    "transactionIndex": "271",
+    "gas": "331225",
+    "gasPrice": "147672406256",
+    "gasUsed": "240247",
+    "cumulativeGasUsed": "24666813",
+    "input": "deprecated",
+    "confirmations": "733235"
+  },
+  {
+    "blockNumber": "14240059",
+    "timeStamp": "1645321681",
+    "hash": "0xfe7c56c24a03c39c085ae3269abd1631178907b0926bdb5e5f082f8c69c6d5d3",
+    "nonce": "45",
+    "blockHash": "0x70e76351642a6dda02cffb4dac2c955f4cb2f430c75f7e3f48d461071d7df8bf",
+    "from": "0x46c70976aa30fc22ca074b8afd3eebda07b5d705",
+    "contractAddress": "0xa0529c325e2594dcc599ba6e39aa4d6b28834c53",
+    "to": "0x5558aed91f04c83bb9dd7201181634997d96a912",
+    "tokenID": "277",
+    "tokenName": "MetaZoo Games",
+    "tokenSymbol": "MetaZoo Games NFT Store",
+    "tokenDecimal": "0",
+    "transactionIndex": "315",
+    "gas": "394709",
+    "gasPrice": "111640655032",
+    "gasUsed": "282655",
+    "cumulativeGasUsed": "15132497",
+    "input": "deprecated",
+    "confirmations": "550776"
   }
 ]

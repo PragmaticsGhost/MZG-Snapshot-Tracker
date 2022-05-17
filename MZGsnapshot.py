@@ -4,8 +4,8 @@ import time
 from datetime import datetime
 from etherscan import Etherscan
 
+#Begin Main loop
 loop = True
-
 while loop:
 
     #Generate Etherscan client using API KEY
@@ -20,14 +20,26 @@ while loop:
     snapshotDate = str(input('Enter date you would like to check eligibility on/before (yyyy-mm-dd hh:mm): ')) #Enter Snapshot Date & Time
     
     #Convert input datetime to epoch
-    dt = datetime.strptime(snapshotDate, '%Y-%m-%d %H:%M') #Format input timestamp
-    epoch = dt.timestamp() #Generate Epoch time from input datetime
-    epochFloat = epoch #Just a placeholder variable
-    epochString = str(epochFloat) #Convert to string
-    correctedEpoch = epochString.replace(".0","") #Remove trailing ".0" 
+    try:
+        dt = datetime.strptime(snapshotDate, '%Y-%m-%d %H:%M') #Format input timestamp
+        epoch = dt.timestamp() #Generate Epoch time from input datetime
+        epochFloat = epoch #Just a placeholder variable
+        epochString = str(epochFloat) #Convert to string
+        correctedEpoch = epochString.replace(".0","") #Remove trailing ".0" that the datetime convert function adds 
+    except:   
+        print("Incorrect datetime format entered. Please be sure to enter date and time in (yyyy-mm-dd hh:mm) format\n")
+        loop = False
+        break
 
     #Query Etherscan API for closest blocknumber to input time & date, will choose a block "before" input datetime if forced.
-    snapshotDateBlockNumber = es.get_block_number_by_timestamp(timestamp=(correctedEpoch), closest="before")
+    try:
+        snapshotDateBlockNumber = es.get_block_number_by_timestamp(timestamp=(correctedEpoch), closest="before")
+
+    except:
+        print("Error querying Etherscan API...")
+        loop = False
+        break
+
 
     #Open blank .JSON file titled "snapshotDateBlockNumber.json" and prepare for writing
     with open('snapshotDateBlockNumber.json', "w") as outfile:   
@@ -36,8 +48,8 @@ while loop:
         json.dump(snapshotDateBlockNumber, outfile, indent=2)
 
     #Choose MZG or MZGT contract to query
-    print("1 = MetaZoo Games Tokens")
-    print("2 = Metazoo Genesis\n")
+    print("1 = MetaZoo Genesis")
+    print("2 = Metazoo Games Token\n")
     contractID = input("Please select the Contract ID you would like to query:\n") #TESTING
 
     if contractID == "1":
@@ -46,7 +58,9 @@ while loop:
 
         walletLength = len(walletID) #Get length of wallet ID for error checking
         wallet1stchars = walletID[0:2] #Get first 2 characters of wallet ID for error checking
-        print("Requested Wallet ID is:" + walletID + ", is this correct?\n")
+        print("Requested Wallet ID is:" + walletID)
+        print("Requested Contract ID is: MetaZoo Genesis @ address" + contractIDMZG)
+        print("Is this correct?")
         time.sleep(0.3)
         answer = input("Y/N?:\n")
 
@@ -64,7 +78,6 @@ while loop:
                     #Query Etherscan API for ERC721 Token Transfer events, filtered by input Wallet ID and Snapshot Date. 
                     getERC721TxEvents = es.get_erc721_token_transfer_events_by_address(address=(walletID), startblock=0, endblock=(snapshotDateBlockNumber), sort="asc")
              
-                    print("Done.\n")
 
                     #Open a .JSON file called "resultES2.json" and prepare for writing
                     with open('resultES2.json', "w") as outfile:   
@@ -72,9 +85,6 @@ while loop:
                         json.dump(getERC721TxEvents, outfile, indent=2)
 
                     print('Etherscan Snapshot Data for Wallet ID ' + walletID + ' at ' + snapshotDate + ' successfully written to "Desktop/resultES2.json"\n')
-
-                    time.sleep(0.3)
-                    print("Iterating through JSON object to enumerate TokenID's....\n")
 
                     #Re-open resultES2.json (it auto-closes when done being read from)
                     with open('resultES2.json', 'r') as f:   
@@ -116,7 +126,7 @@ while loop:
                                     if recvTimeStr <= correctedEpoch: #Compares Tx Received time to Snapshot Input time
 
                                         print("The following MZG Genesis TokenID's entered this wallet on or before " + snapshotDate + " at the following times:")    
-                                        print(toAddress['tokenID'], correctedDate) #Print all eligible Token ID's
+                                        print(toAddress['tokenID'], correctedDate, snapshotDateBlockNumber) #Print all eligible Token ID's
                                         print("")
                         
                                     loop = False  #End loop 
@@ -137,7 +147,9 @@ while loop:
 
         walletLength = len(walletID) #Get length of wallet ID
         wallet1stchars = walletID[0:2] #Parse first two characters of wallet ID
-        print("Requested Wallet ID is:" + walletID + ", is this correct?\n")
+        print("Requested Wallet ID is:" + walletID)
+        print("Requested Contract ID is: MetaZoo Games Token @ address " + contractIDMZGT)
+        print("Is this correct?")
         time.sleep(0.3)
         answer = input("Y/N?:\n") #TESTING
 
@@ -155,7 +167,6 @@ while loop:
                     #Query Etherscan API for ERC721 transfer events by input wallet address/datetime and store returned data in variable
                     getERC721TxEvents = es.get_erc721_token_transfer_events_by_address(address=(walletID), startblock=0, endblock=(snapshotDateBlockNumber), sort="asc")
              
-                    print("Done.\n")
 
                     #Open .json file and prep for writing
                     with open('resultES2.json', "w") as outfile:   
@@ -163,9 +174,6 @@ while loop:
                         json.dump(getERC721TxEvents, outfile, indent=2)
 
                     print('Etherscan Snapshot Data for Wallet ID ' + walletID + ' at ' + snapshotDate + ' successfully written to "Desktop/resultES2.json"\n')
-
-                    time.sleep(0.3)
-                    print("Iterating through JSON object to enumerate Wallet Token ID's....\n")
 
                     #RE-open resultES2.json and load as dict
                     with open('resultES2.json', 'r') as f:   
@@ -205,8 +213,8 @@ while loop:
                                 if contractAddr.casefold() == contractIDMZGT.casefold(): #Compare if Contract ID of tokens are the desired MetaZoo contract ID
                                     if recvTimeStr <= correctedEpoch: #Check snapshot date against receive time of token tx 
 
-                                        print("The following MZGT TokenID's entered this wallet before " + snapshotDate + " at the following times:\n")    
-                                        print(toAddress['tokenID'], correctedDate) #Print all eligible TokenID's
+                                        print("The following MetaZoo Games Token TokenID's entered this wallet before " + snapshotDate + " at the following times:\n")    
+                                        print(toAddress['tokenID'], correctedDate, snapshotDateBlockNumber) #Print all eligible TokenID's, the incoming Tx date, and the blocknumber the Tx happened in
                                         print("")
                         
                                     loop = False  #End Loop
@@ -216,4 +224,4 @@ while loop:
 
 
     else:
-        print("Error, only enter 1 or 2...")    
+        print("Error, only two options playa...")
