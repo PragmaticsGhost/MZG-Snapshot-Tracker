@@ -3,6 +3,17 @@ import json
 import time
 from datetime import datetime
 from etherscan import Etherscan
+import pip
+import os
+
+print("This application requires the 'etherscan-python' package to function. It will now be installed...")
+package = "etherscan-python"
+
+try:
+    __import__package
+except:
+    os.system("pip install "+ package)
+
 
 #Begin Main loop
 loop = True
@@ -125,9 +136,14 @@ while loop:
                                 if contractAddr.casefold() == contractIDMZG.casefold(): #Compares if the contract address from input matches data in JSON
                                     if recvTimeStr <= correctedEpoch: #Compares Tx Received time to Snapshot Input time
 
-                                        print("The following MZG Genesis TokenID's entered this wallet on or before " + snapshotDate + " at the following times:")    
-                                        print(toAddress['tokenID'], correctedDate, snapshotDateBlockNumber) #Print all eligible Token ID's
-                                        print("")
+                                        print("The following MZG Genesis TokenID's entered this wallet on or before " + snapshotDate + " at the following times:") 
+                                        print("TokenID:")   
+                                        print(toAddress['tokenID'])
+                                        print("Received Date:")
+                                        print(correctedDate) 
+                                        print("Received Block:")
+                                        print(snapshotDateBlockNumber) #Print all eligible Token ID's
+                                        print("\n")
                         
                                     loop = False  #End loop 
 
@@ -213,15 +229,18 @@ while loop:
                                 if contractAddr.casefold() == contractIDMZGT.casefold(): #Compare if Contract ID of tokens are the desired MetaZoo contract ID
                                     if recvTimeStr <= correctedEpoch: #Check snapshot date against receive time of token tx 
 
-                                        print("The following MetaZoo Games Token TokenID's entered this wallet before " + snapshotDate + " at the following times:\n")    
-                                        print(toAddress['tokenID'], correctedDate, snapshotDateBlockNumber) #Print all eligible TokenID's, the incoming Tx date, and the blocknumber the Tx happened in
-                                        print("")
+                                        print("The following MZG Genesis TokenID's entered this wallet on or before " + snapshotDate + " at the following times:\n") 
+                                        print("TokenID:")   
+                                        print(toAddress['tokenID'])
+                                        print("Received Date:")
+                                        print(correctedDate) 
+                                        print("Received Block:")
+                                        print(snapshotDateBlockNumber) #Print all eligible Token ID's
+                                        print("\n")
                         
                                     loop = False  #End Loop
 
                     loop = False  #End Loop
-
-
 
     else:
         print("Error, only two options playa...")
