@@ -6,7 +6,7 @@ from etherscan import Etherscan
 from deepdiff import DeepDiff
 import pip
 import os
-import config
+import config #Configuration file import for api_key
 
 
 #Clear console before starting loop
@@ -19,7 +19,7 @@ def clear_console():
 loop = True
 while loop:
 
-    #Generate Etherscan client using API Key given in config file
+    #Generate Etherscan client using API Key given in config.py
     try:
         es = Etherscan(config.api_key)
     except:
