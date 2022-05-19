@@ -18,7 +18,7 @@ def clear_console():
 loop = True
 while loop:
 
-    #Generate Etherscan client using API KEY
+    #Generate Etherscan client using API Key given in config file
     try:
         es = Etherscan(config.api_key)
     except:
