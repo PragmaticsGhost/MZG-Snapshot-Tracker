@@ -10,6 +10,7 @@ import config
 
 
 #Clear console before starting loop
+
 def clear_console():
     os.system('clear')    
 
