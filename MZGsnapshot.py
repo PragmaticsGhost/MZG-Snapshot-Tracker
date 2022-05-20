@@ -9,7 +9,7 @@ import os
 import config #Configuration file import for api_key
 
 
-#Clear console before starting loop
+#Clear console before starting Main loop
 
 def clear_console():
     os.system('clear')    
@@ -85,17 +85,16 @@ while loop:
 
     if contractID == "1":
         contractIDMZG = "0xA0529c325e2594dcc599BA6E39aA4d6b28834c53" #Assign MetaZoo Genesis Contract ID to variable
-        contractIDMZGMintable = "0xa838876C6Db52e5F65a882c5cFCafAA43cf8143d" #Assign MetaZoo GenesisContract ID for Mintable Gasless Store Contract to variable
+        #contractIDMZGMintable = "0xa838876C6Db52e5F65a882c5cFCafAA43cf8143d" #Assign MetaZoo GenesisContract ID for Mintable Gasless Store Contract to variable
 
         walletLength = len(walletID) #Get length of wallet ID for error checking
         wallet1stchars = walletID[0:2] #Get first 2 characters of wallet ID for error checking
         print("Requested Wallet ID is:" + walletID)
         print("Requested Contract ID is: MetaZoo Genesis @ address " + contractIDMZG)
         print("Is this correct?")
-        time.sleep(0.3)
         answer = input("Y/N?:\n")
 
-        if answer == "Y": #Verify Everything is A-OK thus far
+        if answer == "Y" or answer =="y": #Verify Everything is A-OK thus far
 
             if walletLength == 42 : #Verify Wallet ID is at least 42 characters in length
 
@@ -106,12 +105,14 @@ while loop:
                     print("Querying Etherscan API for Wallet info...\n")
                     time.sleep(0.3)
 
-                    #Query Etherscan API for ERC721 Token Transfer events, filtered by input Wallet ID and Snapshot Date. 
+                    #Query Etherscan API for Historical ERC721 Token Transfer events, filtered by input Wallet ID and Snapshot Date. 
                     try:
                         getERC721TxEventsSnapshot = es.get_erc721_token_transfer_events_by_address(address=(walletID), startblock=0, endblock=(snapshotDateBlockNumber), sort="asc")
                     except:
                         print("Error querying Etherscan API for historical ERC721 Transaction events by address for end block:" + snapshotDateBlockNumber)   
                         break
+
+                    #Query Etherscan API for ERC721 Token Transfer events, filtered by input Wallet ID and Snapshot Date. 
                     try:
                         getERC721TxEventsCurrent = es.get_erc721_token_transfer_events_by_address(address=(walletID), startblock=0, endblock=(currentBlockNumber), sort="asc")
                     except:
@@ -130,7 +131,7 @@ while loop:
                     #Open a .JSON file called "resultES2.json" and prepare for writing
                     try:
                         with open('resultES2Current.json', "w") as outfile4:   
-                            #Dump data from getERC721TxEventsSnapshot into json file and prettify
+                            #Dump data from getERC721TxEventsCurrent into json file and prettify
                             json.dump(getERC721TxEventsCurrent, outfile4, indent=2)
                             print('Etherscan Current Wallet Snapshot Data for Wallet ID' + walletID + ' at ' + timestampStr + ' successfully written to "Desktop/resultES2Current.json"\n')
 
@@ -155,8 +156,7 @@ while loop:
                         break    
 
 ######################################################################END COMPARE FEATURE TESTING################################################################################
-
-                    
+                   
                     #Re-open resultES2.json (auto-closes when done being read from)
                     with open('resultES2.json', 'r') as f:   
                         #Convert JSON data to dict for Python querying 
@@ -175,32 +175,11 @@ while loop:
                             intRecvTime = int(recvTime) #Convert to integer
                             correctedDate = datetime.fromtimestamp(intRecvTime) #Convert to datetime from epoch
                             recvTimeStr = str(recvTime) #Convert to string
-                            
-
-                            #print("recvAddr")                          #DEBUG
-                            #print(recvAddr.casefold(), len(recvAddr))  #DEBUG
-                            #print("")                                  #DEBUG
-                            #print("walletID")                          #DEBUG
-                            #print(walletID.casefold(), len(walletID))  #DEBUG
-                            #rint("")                                   #DEBUG
-                            #print("contractAddr")                      #DEBUG
-                            #print(contractAddr.casefold(), len(contractAddr)) #DEBUG
-                            #print("")                                  #DEBUG
-                            #print("contractIDMZG")                     #DEBUG
-                            #print(contractIDMZG.casefold(), len(contractIDMZG)) #DEBUG
-                            #print("")                                  #DEBUG
-                            #print("recvTimeStr")                       #DEBUG
-                            #print(recvTimeStr, len(recvTimeStr))  #DEBUG
-                            #print("")                             #DEBUG
-                            #print("correctedEpoch")               #DEBUG
-                            #print(correctedEpoch, len(correctedEpoch)) #DEBUG      
-                            #print("")                              #DEBUG
 
                             if recvAddr.casefold() == walletID.casefold(): #Compare if "to" address of a transaction matches input wallet (and ignores upper/lowercase)
                                 if contractAddr.casefold() == contractIDMZG.casefold(): #Compares if the contract address from input matches data in JSON
                                     if recvTimeStr <= correctedEpochInput: #Compares Tx Received time to Snapshot Input time
-
-                                        
+  
                                         print("The following MZG Genesis TokenID's entered this wallet on or before " + snapshotDate + " at the following times:") 
                                         print("TokenID:")   
                                         print(toAddress['tokenID'])
@@ -213,10 +192,9 @@ while loop:
                                     loop = False  #End loop 
 
                     loop = False   #End loop prematurely if errors  
-     
 
                 else:
-                    print('Wallet ID does not start with "0x", please make sure there is an "0x" at the beginning of the wallet address.\n')           
+                    print('Wallet ID does not start with "0x", please make sure there is an "0x" at the beginning of the wallet address. Try Again.\n')           
 
             else:
                 print("Wallet ID is not the correct number of characters, try again.\n")
@@ -226,8 +204,7 @@ while loop:
 
     elif contractID == "2":
         contractIDMZGT = "0x2D366Be8fA4D15c289964dD4Adf7Be6Cc5e896E8" #Assign MetaZoo Games Token Contract ID to a variable
-
-        
+  
         walletLength = len(walletID) #Get length of wallet ID for error checking
         wallet1stchars = walletID[0:2] #Get first 2 characters of wallet ID for error checking
         print("Requested Wallet ID is:" + walletID)
@@ -236,7 +213,7 @@ while loop:
         time.sleep(0.3)
         answer = input("Y/N?:\n")
 
-        if answer == "Y": #Verify Everything is A-OK thus far
+        if answer == "Y" or answer == "y": #Verify Everything is A-OK thus far
 
             if walletLength == 42 : #Verify Wallet ID is at least 42 characters in length
 
@@ -247,37 +224,40 @@ while loop:
                     print("Querying Etherscan API for Wallet info...\n")
                     time.sleep(0.3)
 
-                    #Query Etherscan API for ERC721 Token Transfer events, filtered by input Wallet ID and Snapshot Date. 
+                    #Query Etherscan API for historical ERC721 Token Transfer events, filtered by input Wallet ID and Snapshot Date. 
                     try:
                         getERC721TxEventsSnapshot = es.get_erc721_token_transfer_events_by_address(address=(walletID), startblock=0, endblock=(snapshotDateBlockNumber), sort="asc")
                     except:
                         print("Error querying Etherscan API for historical ERC721 Transaction events by address for end block:" + snapshotDateBlockNumber)  
                         break 
+
+                    #Query Etherscan API for ERC721 Token Transfer events, filtered by input Wallet ID and Snapshot Date. 
                     try:
                         getERC721TxEventsCurrent = es.get_erc721_token_transfer_events_by_address(address=(walletID), startblock=0, endblock=(currentBlockNumber), sort="asc")
                     except:
                         print("Error querying Etherscan API for ERC721 Transaction events by address for end block:" + currentBlockNumber)
                         break
- 
-                    try:
-                        #Open a .JSON file called "resultES2.json" and prepare for writing
-                        with open('resultES2.json', "w") as outfile3:   
-                            #Dump data from getERC721TxEventsSnapshot into json file and prettify
-                            json.dump(getERC721TxEventsSnapshot, outfile3, indent=2)
-                            print('Etherscan Historical Snapshot Data for Wallet ID ' + walletID + ' at ' + snapshotDate + ' successfully written to "Desktop/resultES2.json"\n')
-                    except:
-                        print("Error creating .JSON file from getERC721TxEventsSnapshot data")
-                        break
 
                     #Open a .JSON file called "resultES2.json" and prepare for writing
                     try:
-                        with open('resultES2Current.json', "w") as outfile4:   
+                        with open('resultES2.json', "w") as outfile3:   
                             #Dump data from getERC721TxEventsSnapshot into json file and prettify
-                            json.dump(getERC721TxEventsCurrent, outfile4, indent=2)
-                            print('Etherscan Current Wallet Snapshot Data for Wallet ID' + walletID + ' at ' + timestampStr + ' successfully written to "Desktop/resultES2Current.json"\n')
-
+                            json.dump(getERC721TxEventsSnapshot, outfile3, indent=2)
+                            #print('Etherscan historical Snapshot Data for Wallet ID ' + walletID + ' at ' + snapshotDate + ' successfully written to "Desktop/resultES2.json"\n')
                     except:
-                        print("Error creating .JSON file from getERC721TxEventsCurrent data\n")
+                        print("Error creating .JSON file from historical snapshot data, exiting....")
+                        loop = False
+                        break
+
+                    #Open a .JSON file called "resultES2Current.json" and prepare for writing
+                    try:
+                        with open('resultES2Current.json', "w") as outfile4:   
+                            #Dump data from getERC721TxEventsCurrent into json file and prettify
+                            json.dump(getERC721TxEventsCurrent, outfile4, indent=2)
+                            #print('Etherscan current Wallet Snapshot Data for Wallet ID' + walletID + ' at ' + timestampStr + ' successfully written to "Desktop/resultES2Current.json"\n')
+                    except:
+                        print("Error creating .JSON file from current snapshot data, exiting...\n")
+                        loop = False
                         break    
 
 ######################################################################TESTING COMPARE FEATURES###################################################################################
@@ -314,26 +294,6 @@ while loop:
                             intRecvTime = int(recvTime) #Convert to integer
                             correctedDate = datetime.fromtimestamp(intRecvTime) #Convert to datetime from epoch
                             recvTimeStr = str(recvTime) #Convert to string
-                            
-
-                            #print("recvAddr")                          #DEBUG
-                            #print(recvAddr.casefold(), len(recvAddr))  #DEBUG
-                            #print("")                                  #DEBUG
-                            #print("walletID")                          #DEBUG
-                            #print(walletID.casefold(), len(walletID))  #DEBUG
-                            #rint("")                                   #DEBUG
-                            #print("contractAddr")                      #DEBUG
-                            #print(contractAddr.casefold(), len(contractAddr)) #DEBUG
-                            #print("")                                  #DEBUG
-                            #print("contractIDMZGT")                     #DEBUG
-                            #print(contractIDMZGT.casefold(), len(contractIDMZG)) #DEBUG
-                            #print("")                                  #DEBUG
-                            #print("recvTimeStr")                       #DEBUG
-                            #print(recvTimeStr, len(recvTimeStr))  #DEBUG
-                            #print("")                             #DEBUG
-                            #print("correctedEpoch")               #DEBUG
-                            #print(correctedEpoch, len(correctedEpoch)) #DEBUG      
-                            #print("")                              #DEBUG
 
                             if recvAddr.casefold() == walletID.casefold(): #Compare if "to" address of a transaction matches input wallet (and ignores upper/lowercase)
                                 if contractAddr.casefold() == contractIDMZGT.casefold(): #Compares if the contract address from input matches data in JSON
